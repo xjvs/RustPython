@@ -1,7 +1,7 @@
+use parking_lot::{RwLock, RwLockReadGuard, RwLockWriteGuard};
 use std::ffi::OsString;
 use std::fs::File;
 use std::io::ErrorKind;
-use std::sync::{RwLock, RwLockReadGuard, RwLockWriteGuard};
 use std::time::Duration;
 
 use crate::function::OptionalArg;
@@ -108,11 +108,11 @@ fn convert_to_file_io(file: &Option<File>, mode: &str, vm: &VirtualMachine) -> P
 
 impl PopenRef {
     fn borrow_process(&self) -> RwLockReadGuard<'_, subprocess::Popen> {
-        self.process.read().unwrap()
+        self.process.read()
     }
 
     fn borrow_process_mut(&self) -> RwLockWriteGuard<'_, subprocess::Popen> {
-        self.process.write().unwrap()
+        self.process.write()
     }
 
     fn new(cls: PyClassRef, args: PopenArgs, vm: &VirtualMachine) -> PyResult<PopenRef> {
